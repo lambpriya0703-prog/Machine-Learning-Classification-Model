@@ -153,3 +153,6 @@ if user_project_selection == 'Iris' :
     plt.savefig('virginica.jpeg')
 
     st.image(f'{target[final_predicted_value]}.jpeg')
+    
+
+st.markdown("Designed by **Anshu**")
