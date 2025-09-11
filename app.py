@@ -1,11 +1,9 @@
 import streamlit as st
 import time
 import pandas as pd
-import random
 import numpy as np
 import pickle
 import matplotlib.pyplot as plt
-
 
 st.title('Hybrid Machine learning Project')
 st.header('Select Dataset to predict value!!')
@@ -21,17 +19,14 @@ Wine: Predicts wine quality based on chemical properties.
 Tennis Play: Predicts if a tennis match will be played based on weather conditions.
 
 The system uses machine learning models to provide insights based on the selected features.'''
-
 st.write(summary)
 
 
+# Sidebar project select
 st.sidebar.title('Select Project 🎯 ')
 user_project_selection = st.sidebar.radio('Project List: ',['Iris','Wine','Play Tennis'])
-# st.sidebar.write(user_project_selection)
-# st.write(time.asctime())
 
-wine_url ='''https://ars.els-cdn.com/content/image/1-s2.0-S2589721721000222-gr1.jpg'''
-
+wine_url = '''https://ars.els-cdn.com/content/image/1-s2.0-S2589721721000222-gr1.jpg'''
 
 if user_project_selection == 'Iris':
     st.sidebar.image('iris bg.png')
@@ -40,15 +35,13 @@ elif user_project_selection == 'Wine':
 elif user_project_selection == 'Play Tennis':
     st.sidebar.image('play_tennis.jpg')
 
-temp_df = pd.read_csv(user_project_selection.lower().replace('play ',''))
+# Read dataset
+temp_df = pd.read_csv(user_project_selection.lower().replace('play ','')) 
 st.write(temp_df.sample(2))
 
 
-
-
-
+# Input section
 np.random.seed(23)
-
 X_all_input = []
 
 for i in temp_df.iloc[:,:-1]:
@@ -58,7 +51,6 @@ for i in temp_df.iloc[:,:-1]:
         choice = st.sidebar.selectbox(f'select {i} value',options)
         st.sidebar.write(f"You selected :{choice}")
         X_all_input.append(choice)
-
     else:
         if min_f == max_f:
             max_f == (max_f + 1)
@@ -72,10 +64,8 @@ for i in temp_df.iloc[:,:-1]:
                 choice = st.sidebar.slider(f'{i}',min_f,max_f,temp_df[i].sample(1).values[0])
                 X_all_input.append(choice)
 
-
 X_final_col = temp_df.iloc[:,:-1].columns
 final_X = [X_all_input]
-
 X_input = pd.DataFrame(final_X,columns = X_final_col)
 
 st.subheader('User Selected Choice:')
@@ -96,43 +86,54 @@ predicted_value = chatgpt_brain.predict(final_X)
 final_predicted_value = predicted_value[0]
 
 
+# Target names
 iris_target_names = ['setosa', 'versicolor', 'virginica']
 wine_target_names = ['class_0','class_1','class_2']
 tennis_target_names = ['Yes','No']
 
+# Output logic
 if user_project_selection == 'Iris':
     st.image('iris bg.png')
     target = iris_target_names
     ans_name = 'Predicted Flower is : '
-    
+
 elif user_project_selection == 'Wine':
     st.image(wine_url)
     target = wine_target_names
     ans_name = 'Predicted Wine Class: '
-    class_name = ''
+
     if final_predicted_value == 0:
         class_name = 'Low Quality Wine'
+        st.image('wine_low.jpg',width=300)   # add your image file
     elif final_predicted_value == 1:
         class_name = 'Medium Quality Wine'
-    else: 
+        st.image('wine_medium.jpg',width=300) # add your image file
+    else:
         class_name = 'High Quality Wine'
-    
+        st.image('wine_high.jpg',width=300)   # add your image file
+
 elif user_project_selection == 'Play Tennis':
     st.image('play_tennis.jpg')
     target = tennis_target_names
     ans_name = 'Can We Play Tennis ??: '
 
-#if target[final_predicted_value] == 'No':
- #   st.warning(f'{ans_name} {target[final_predicted_value]}')
-#else:
+    # Tennis condition images
+    if target[final_predicted_value] == 'Yes':
+        st.image('tennis_yes.jpg',width=300)   # add your "Yes play" image
+    else:
+        st.image('tennis_no.jpg',width=300)    # add youxr "No play" image
 
+
+# Prediction Result
 with st.spinner('Thinking...'):
- time.sleep(3)
+    time.sleep(2)
+
 if user_project_selection == 'Wine':
     st.success(f'{ans_name} {class_name}')
 else:
     st.warning(f'{ans_name} {target[final_predicted_value]}')
-    
+
+# Extra for Iris
 if user_project_selection == 'Iris' :
     iris_arr = plt.imread('iris bg.png')
     image_arr = iris_arr.copy()
@@ -152,17 +153,3 @@ if user_project_selection == 'Iris' :
     plt.savefig('virginica.jpeg')
 
     st.image(f'{target[final_predicted_value]}.jpeg')
-    
-
-  
-
-
-
-
-
-
-
-
-
-
-
