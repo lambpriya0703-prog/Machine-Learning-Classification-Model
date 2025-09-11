@@ -1,5 +1,10 @@
 #  🌟 Machine Learning Classification Models
 
+### 🚀 Live Demo  
+👉 [Click here to use the App]  https://mlclassicmodel.streamlit.app/
+
+<img width="2032" height="970" alt="image" src="https://github.com/user-attachments/assets/28373224-6e3e-46bb-ab67-2648ee32f139" />
+
 ## 📌 Overview 
 
 This repository demonstrates the implementation of multiple machine learning classification models on three different datasets:
@@ -27,6 +32,7 @@ The project compares different algorithms, evaluates their accuracy, and showcas
 	•	K-Nearest Neighbors (KNN)
 	•	Support Vector Machine (SVM)
 	•	Naive Bayes
+ 	•	Random Forest
  
 ## Performance Metrics
 	•	Accuracy: 89%
@@ -78,4 +84,5 @@ B.Tech | AI & Data Science
 📧 anshusahani8577@gmail.com
 
 📌 Linkedin Profile
+
 https://www.linkedin.com/in/anshu-sahani-768b39355/
