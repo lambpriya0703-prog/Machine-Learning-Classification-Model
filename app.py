@@ -52,9 +52,6 @@ elif user_project_selection == 'Play Tennis':
 # READ DATASET
 # ==========================================================
 
-# GitHub repo ke according filenames
-# iris, wine, tennis
-
 file_name = user_project_selection.lower().replace('play ', '')
 
 temp_df = pd.read_csv(file_name)
@@ -72,10 +69,13 @@ feature_columns = temp_df.iloc[:, :-1].columns
 
 for col in feature_columns:
 
-    # OBJECT / CATEGORY DATA
-    if temp_df[col].dtype == 'object':
+    # ======================================================
+    # CATEGORICAL DATA
+    # ======================================================
 
-        options = temp_df[col].unique()
+    if temp_df[col].dtype == 'object' or temp_df[col].dtype == 'O':
+
+        options = temp_df[col].unique().tolist()
 
         choice = st.sidebar.selectbox(
             f'Select {col}',
@@ -86,7 +86,10 @@ for col in feature_columns:
 
         X_all_input.append(choice)
 
+    # ======================================================
     # BOOLEAN DATA
+    # ======================================================
+
     elif str(temp_df[col].dtype) == 'bool':
 
         options = [True, False]
@@ -100,26 +103,43 @@ for col in feature_columns:
 
         X_all_input.append(choice)
 
+    # ======================================================
     # NUMERIC DATA
+    # ======================================================
+
     else:
 
-        min_f = float(temp_df[col].min())
-        max_f = float(temp_df[col].max())
+        try:
 
-        default_value = float(temp_df[col].sample(1).values[0])
+            min_f = float(temp_df[col].min())
+            max_f = float(temp_df[col].max())
 
-        # avoid same min/max error
-        if min_f == max_f:
-            max_f = max_f + 1
+            default_value = float(
+                temp_df[col].sample(1).values[0]
+            )
 
-        choice = st.sidebar.slider(
-            f'{col}',
-            min_value=min_f,
-            max_value=max_f,
-            value=default_value
-        )
+            if min_f == max_f:
+                max_f = max_f + 1
 
-        X_all_input.append(choice)
+            choice = st.sidebar.slider(
+                f'{col}',
+                min_value=min_f,
+                max_value=max_f,
+                value=default_value
+            )
+
+            X_all_input.append(choice)
+
+        except:
+
+            options = temp_df[col].unique().tolist()
+
+            choice = st.sidebar.selectbox(
+                f'Select {col}',
+                options
+            )
+
+            X_all_input.append(choice)
 
 # ==========================================================
 # INPUT DATAFRAME
@@ -153,7 +173,6 @@ if user_project_selection == 'Play Tennis':
         dtype=int
     )
 
-    # Match model columns
     user_encoded = user_encoded.reindex(
         columns=encoded_df.columns,
         fill_value=0
@@ -245,7 +264,7 @@ elif user_project_selection == 'Play Tennis':
         st.image('tennis_no.jpg', width=300)
 
 # ==========================================================
-# LOADING ANIMATION
+# LOADING
 # ==========================================================
 
 with st.spinner('Thinking...'):
@@ -264,7 +283,7 @@ else:
     st.warning(f'{ans_name} {target[final_predicted_value]}')
 
 # ==========================================================
-# EXTRA IRIS IMAGE SECTION
+# EXTRA IRIS SECTION
 # ==========================================================
 
 if user_project_selection == 'Iris':
