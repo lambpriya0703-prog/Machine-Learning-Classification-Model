@@ -1,7 +1,7 @@
 #  🌟 Machine Learning Classification Models
 
 ### 🚀 Live Demo  
-👉 [Click here to use the App]  https://mlclassicmodel.streamlit.app/
+👉 [Click here to use the App] 
 
 <img width="2032" height="970" alt="image" src="https://github.com/user-attachments/assets/28373224-6e3e-46bb-ab67-2648ee32f139" />
 
