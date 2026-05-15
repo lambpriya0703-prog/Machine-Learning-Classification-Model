@@ -75,14 +75,3 @@ The project compares different algorithms, evaluates their accuracy, and showcas
 	•	 If you like this project, consider starring ⭐ it on GitHub!
 
 
-### 🙋‍♂️ Author
-
-Anshu Sahani
-
-B.Tech | AI & Data Science
-
-📧 anshusahani8577@gmail.com
-
-📌 Linkedin Profile
-
-https://www.linkedin.com/in/anshu-sahani-768b39355/
