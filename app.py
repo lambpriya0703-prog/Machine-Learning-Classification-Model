@@ -5,6 +5,10 @@ import numpy as np
 import pickle
 import matplotlib.pyplot as plt
 
+# ==========================================================
+# PAGE TITLE
+# ==========================================================
+
 st.title('Hybrid Machine Learning Project')
 st.header('Select Dataset to Predict Value!!')
 st.subheader('Project Summary:')
@@ -22,7 +26,7 @@ Tennis Play: Predicts if a tennis match will be played based on weather conditio
 st.write(summary)
 
 # ==========================================================
-# Sidebar
+# SIDEBAR
 # ==========================================================
 
 st.sidebar.title('Select Project 🎯')
@@ -34,6 +38,7 @@ user_project_selection = st.sidebar.radio(
 
 wine_url = 'https://ars.els-cdn.com/content/image/1-s2.0-S2589721721000222-gr1.jpg'
 
+# Sidebar Images
 if user_project_selection == 'Iris':
     st.sidebar.image('iris bg.png')
 
@@ -44,10 +49,13 @@ elif user_project_selection == 'Play Tennis':
     st.sidebar.image('play_tennis.jpg')
 
 # ==========================================================
-# Read Dataset
+# READ DATASET
 # ==========================================================
 
-file_name = user_project_selection.lower().replace('play ', '') + '.csv'
+# GitHub repo ke according filenames
+# iris, wine, tennis
+
+file_name = user_project_selection.lower().replace('play ', '')
 
 temp_df = pd.read_csv(file_name)
 
@@ -55,7 +63,7 @@ st.subheader("Sample Dataset")
 st.write(temp_df.sample(2))
 
 # ==========================================================
-# User Input
+# USER INPUT
 # ==========================================================
 
 X_all_input = []
@@ -64,7 +72,7 @@ feature_columns = temp_df.iloc[:, :-1].columns
 
 for col in feature_columns:
 
-    # Object datatype
+    # OBJECT / CATEGORY DATA
     if temp_df[col].dtype == 'object':
 
         options = temp_df[col].unique()
@@ -74,9 +82,11 @@ for col in feature_columns:
             options
         )
 
+        st.sidebar.write(f'Selected: {choice}')
+
         X_all_input.append(choice)
 
-    # Boolean datatype
+    # BOOLEAN DATA
     elif str(temp_df[col].dtype) == 'bool':
 
         options = [True, False]
@@ -86,9 +96,11 @@ for col in feature_columns:
             options
         )
 
+        st.sidebar.write(f'Selected: {choice}')
+
         X_all_input.append(choice)
 
-    # Numeric datatype
+    # NUMERIC DATA
     else:
 
         min_f = float(temp_df[col].min())
@@ -96,7 +108,7 @@ for col in feature_columns:
 
         default_value = float(temp_df[col].sample(1).values[0])
 
-        # if same value
+        # avoid same min/max error
         if min_f == max_f:
             max_f = max_f + 1
 
@@ -110,7 +122,7 @@ for col in feature_columns:
         X_all_input.append(choice)
 
 # ==========================================================
-# Create Input DataFrame
+# INPUT DATAFRAME
 # ==========================================================
 
 X_input = pd.DataFrame(
@@ -122,7 +134,7 @@ st.subheader('User Selected Values')
 st.write(X_input)
 
 # ==========================================================
-# Encode Play Tennis
+# ENCODING FOR PLAY TENNIS
 # ==========================================================
 
 model_input = X_input.copy()
@@ -141,7 +153,7 @@ if user_project_selection == 'Play Tennis':
         dtype=int
     )
 
-    # Match columns
+    # Match model columns
     user_encoded = user_encoded.reindex(
         columns=encoded_df.columns,
         fill_value=0
@@ -150,7 +162,7 @@ if user_project_selection == 'Play Tennis':
     model_input = user_encoded
 
 # ==========================================================
-# Load Model
+# LOAD MODEL
 # ==========================================================
 
 model_name = user_project_selection.lower().replace('play ', '')
@@ -161,7 +173,7 @@ with open(final_model_name, 'rb') as f:
     chatgpt_brain = pickle.load(f)
 
 # ==========================================================
-# Prediction
+# PREDICTION
 # ==========================================================
 
 predicted_value = chatgpt_brain.predict(model_input)
@@ -169,7 +181,7 @@ predicted_value = chatgpt_brain.predict(model_input)
 final_predicted_value = predicted_value[0]
 
 # ==========================================================
-# Target Labels
+# TARGET LABELS
 # ==========================================================
 
 iris_target_names = ['setosa', 'versicolor', 'virginica']
@@ -179,7 +191,7 @@ wine_target_names = ['class_0', 'class_1', 'class_2']
 tennis_target_names = ['Yes', 'No']
 
 # ==========================================================
-# Output Section
+# OUTPUT SECTION
 # ==========================================================
 
 if user_project_selection == 'Iris':
@@ -233,14 +245,14 @@ elif user_project_selection == 'Play Tennis':
         st.image('tennis_no.jpg', width=300)
 
 # ==========================================================
-# Loading Animation
+# LOADING ANIMATION
 # ==========================================================
 
 with st.spinner('Thinking...'):
     time.sleep(2)
 
 # ==========================================================
-# Final Result
+# FINAL RESULT
 # ==========================================================
 
 if user_project_selection == 'Wine':
@@ -252,7 +264,7 @@ else:
     st.warning(f'{ans_name} {target[final_predicted_value]}')
 
 # ==========================================================
-# Extra Iris Section
+# EXTRA IRIS IMAGE SECTION
 # ==========================================================
 
 if user_project_selection == 'Iris':
@@ -282,7 +294,7 @@ if user_project_selection == 'Iris':
     st.image(f'{target[final_predicted_value]}.jpeg')
 
 # ==========================================================
-# Footer
+# FOOTER
 # ==========================================================
 
 st.markdown("Designed by **Anshu**")
