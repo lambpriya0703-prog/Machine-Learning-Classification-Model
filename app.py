@@ -155,4 +155,4 @@ if user_project_selection == 'Iris' :
     st.image(f'{target[final_predicted_value]}.jpeg')
     
 
-st.markdown("Designed by **Anshu**")
+st.markdown("Designed by **Priya**")
